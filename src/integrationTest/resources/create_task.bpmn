@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0krfa3s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.0.0">
+  <bpmn:process id="createUserTask" name="Create User Task" isExecutable="true">
+    <bpmn:sequenceFlow id="Flow_1ex1957" sourceRef="createTaskMessage" targetRef="processTask" />
+    <bpmn:userTask id="processTask" name="${name}" camunda:formKey="${taskId}" camunda:candidateGroups="${group}" camunda:dueDate="${dueDate != null ? dueDate : &#39;P2D&#39;}">
+      <bpmn:incoming>Flow_1ex1957</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t5gjw4</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_1t5gjw4" sourceRef="processTask" targetRef="userTaskCompleted" />
+    <bpmn:endEvent id="userTaskCompleted" name="User task completed">
+      <bpmn:incoming>Flow_1t5gjw4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:startEvent id="createTaskMessage" name="Create User task message received">
+      <bpmn:outgoing>Flow_1ex1957</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_153v0nn" messageRef="Message_1pi3bbk" />
+    </bpmn:startEvent>
+    <bpmn:boundaryEvent id="overdueTaskTimer" name="Overdue task timer" cancelActivity="false" attachedToRef="processTask">
+      <bpmn:outgoing>Flow_1qd9356</bpmn:outgoing>
+      <bpmn:timerEventDefinition id="TimerEventDefinition_1ni37xr">
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${dueDate != null ? dueDate : 'P2D'}</bpmn:timeDate>
+      </bpmn:timerEventDefinition>
+    </bpmn:boundaryEvent>
+    <bpmn:sequenceFlow id="Flow_1qd9356" sourceRef="overdueTaskTimer" targetRef="Activity_19ca5lc" />
+    <bpmn:businessRuleTask id="Activity_19ca5lc" name="Create overdue task" camunda:resultVariable="task" camunda:decisionRef="getOverdueTask_${jurisdiction}_${caseType}" camunda:mapDecisionResult="singleResult">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="overdueTaskId">${task.taskId}</camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qd9356</bpmn:incoming>
+      <bpmn:outgoing>Flow_1dygid7</bpmn:outgoing>
+    </bpmn:businessRuleTask>
+    <bpmn:sequenceFlow id="Flow_1dygid7" sourceRef="Activity_19ca5lc" targetRef="Gateway_1okq3ab" />
+    <bpmn:endEvent id="overdueTaskNotCreated" name="No overdue task created">
+      <bpmn:incoming>Flow_0xlwe3k</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0xlwe3k" name="Do not crate overdue task" sourceRef="Gateway_1okq3ab" targetRef="overdueTaskNotCreated">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${task == null}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1okq3ab">
+      <bpmn:incoming>Flow_1dygid7</bpmn:incoming>
+      <bpmn:outgoing>Flow_0xlwe3k</bpmn:outgoing>
+      <bpmn:outgoing>Flow_17hz6gt</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="processOverdueTask" name="${task.name}" camunda:formKey="${overdueTaskId}" camunda:candidateGroups="${task.group}" camunda:dueDate="${overdueTaskDueDate}">
+      <bpmn:incoming>Flow_0goqofl</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sv04ne</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0goqofl" name="Create overdue task" sourceRef="calculateDueDate" targetRef="processOverdueTask" />
+    <bpmn:endEvent id="Event_076nh9d" name="Overdue task completed">
+      <bpmn:incoming>Flow_0sv04ne</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0sv04ne" sourceRef="processOverdueTask" targetRef="Event_076nh9d" />
+    <bpmn:sequenceFlow id="Flow_17hz6gt" sourceRef="Gateway_1okq3ab" targetRef="calculateDueDate" />
+    <bpmn:serviceTask id="calculateDueDate" name="Calculate Due Date" camunda:type="external" camunda:topic="calculate-due-date">
+      <bpmn:incoming>Flow_17hz6gt</bpmn:incoming>
+      <bpmn:outgoing>Flow_0goqofl</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmn:message id="Message_1pi3bbk" name="createTaskMessage" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="createUserTask">
+      <bpmndi:BPMNEdge id="Flow_17hz6gt_di" bpmnElement="Flow_17hz6gt">
+        <di:waypoint x="740" y="281" />
+        <di:waypoint x="740" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sv04ne_di" bpmnElement="Flow_0sv04ne">
+        <di:waypoint x="790" y="510" />
+        <di:waypoint x="842" y="510" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0goqofl_di" bpmnElement="Flow_0goqofl">
+        <di:waypoint x="740" y="390" />
+        <di:waypoint x="740" y="470" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="702" y="410" width="76" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xlwe3k_di" bpmnElement="Flow_0xlwe3k">
+        <di:waypoint x="765" y="256" />
+        <di:waypoint x="842" y="256" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="768" y="226" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dygid7_di" bpmnElement="Flow_1dygid7">
+        <di:waypoint x="630" y="256" />
+        <di:waypoint x="715" y="256" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qd9356_di" bpmnElement="Flow_1qd9356">
+        <di:waypoint x="580" y="175" />
+        <di:waypoint x="580" y="216" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t5gjw4_di" bpmnElement="Flow_1t5gjw4">
+        <di:waypoint x="630" y="117" />
+        <di:waypoint x="842" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ex1957_di" bpmnElement="Flow_1ex1957">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="530" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_1h3qguy_di" bpmnElement="processTask">
+        <dc:Bounds x="530" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mqu4ld_di" bpmnElement="userTaskCompleted">
+        <dc:Bounds x="842" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="835" y="142" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0836shu_di" bpmnElement="createTaskMessage">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="142" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_192xf2o_di" bpmnElement="Activity_19ca5lc">
+        <dc:Bounds x="530" y="216" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_02dwm2u_di" bpmnElement="overdueTaskNotCreated">
+        <dc:Bounds x="842" y="238" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="822" y="281" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1svqvkp_di" bpmnElement="Gateway_1okq3ab" isMarkerVisible="true">
+        <dc:Bounds x="715" y="231" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_00ol99a_di" bpmnElement="processOverdueTask">
+        <dc:Bounds x="690" y="470" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_076nh9d_di" bpmnElement="Event_076nh9d">
+        <dc:Bounds x="842" y="492" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="828" y="535" width="66" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_12w2x1m_di" bpmnElement="calculateDueDate">
+        <dc:Bounds x="690" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0e220h0_di" bpmnElement="overdueTaskTimer">
+        <dc:Bounds x="562" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="549" y="182" width="66" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
