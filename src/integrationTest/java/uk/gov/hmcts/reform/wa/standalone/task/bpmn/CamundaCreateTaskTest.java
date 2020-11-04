@@ -21,18 +21,18 @@ import static org.apache.commons.lang3.time.DateUtils.isSameDay;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
-import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.job;
 import static org.junit.Assert.assertTrue;
-
 import static uk.gov.hmcts.reform.wa.standalone.task.bpmn.ProcessEngineBuilder.getProcessEngine;
 
+@SuppressWarnings("PMD.UseConcurrentHashMap")
 public class CamundaCreateTaskTest {
 
     public static final String PROCESS_TASK = "processTask";
     private static final String EXPECTED_GROUP = "TCW";
     private static final ZonedDateTime DUE_DATE = now().plusDays(7);
     private static final String DUE_DATE_STRING = DUE_DATE.format(ISO_INSTANT);
-    protected static final Date DUE_DATE_DATE = from(DUE_DATE.toInstant());
+    public static final Date DUE_DATE_DATE = from(DUE_DATE.toInstant());
     public static final String TASK_NAME = "task name";
 
     @Rule
