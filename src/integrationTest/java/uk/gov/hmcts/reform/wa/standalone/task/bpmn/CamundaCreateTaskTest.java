@@ -15,7 +15,6 @@ import java.util.Map;
 
 import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ISO_INSTANT;
-import static java.util.Collections.singletonMap;
 import static java.util.Date.from;
 import static java.util.Map.of;
 import static org.apache.commons.lang3.time.DateUtils.isSameDay;
@@ -33,7 +32,7 @@ public class CamundaCreateTaskTest {
     private static final String EXPECTED_GROUP = "TCW";
     private static final ZonedDateTime DUE_DATE = now().plusDays(7);
     private static final String DUE_DATE_STRING = DUE_DATE.format(ISO_INSTANT);
-    public static final Date DUE_DATE_DATE = from(DUE_DATE.toInstant());
+    protected static final Date DUE_DATE_DATE = from(DUE_DATE.toInstant());
     public static final String TASK_NAME = "task name";
 
     @Rule
