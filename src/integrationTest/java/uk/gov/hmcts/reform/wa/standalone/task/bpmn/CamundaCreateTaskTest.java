@@ -15,18 +15,17 @@ import java.util.Map;
 
 import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ISO_INSTANT;
-import static java.util.Collections.singletonMap;
 import static java.util.Date.from;
 import static java.util.Map.of;
 import static org.apache.commons.lang3.time.DateUtils.isSameDay;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
-import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.*;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.job;
 import static org.junit.Assert.assertTrue;
-
 import static uk.gov.hmcts.reform.wa.standalone.task.bpmn.ProcessEngineBuilder.getProcessEngine;
 
+@SuppressWarnings("PMD.UseConcurrentHashMap")
 public class CamundaCreateTaskTest {
 
     public static final String PROCESS_TASK = "processTask";
