@@ -17,7 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(BaseController.class)
 @SuppressWarnings("PMD.LawOfDemeter")
-class ControllerTest {
+class BaseControllerTest {
 
     @Autowired
     private MockMvc mvc;
