@@ -1,11 +1,15 @@
 package uk.gov.hmcts.reform.wastandalonetaskbpmn;
 
 import org.camunda.bpm.engine.ManagementService;
+import org.camunda.bpm.engine.impl.test.PluggableProcessEngineTestCase;
 import org.camunda.bpm.engine.runtime.ActivityInstance;
 import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
+import org.camunda.bpm.engine.task.Task;
+import org.camunda.bpm.engine.task.TaskQuery;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.ProcessEngineRule;
+import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -60,7 +64,7 @@ public class CamundaCreateTaskTest {
             "group", EXPECTED_GROUP,
             "dueDate", DUE_DATE_STRING,
             "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         ));
 
         ActivityInstance activityInstance = runtimeService().getActivityInstance(processInstance.getId());
@@ -71,6 +75,7 @@ public class CamundaCreateTaskTest {
         assertTrue(childActivityInstances[0].getActivityType().equals("intermediateTimer"));
         assertThat(processInstance).isStarted()
             .task().isNull();
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("processStartTimer");
 
         JobQuery jobQuery = managementService.createJobQuery().processInstanceId(processInstance.getId());
         // will execute the delayUtil timer manually
@@ -97,68 +102,30 @@ public class CamundaCreateTaskTest {
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void createsAndCompletesATaskWithADueDate() throws InterruptedException {
-        ProcessInstance processInstance = startCreateTaskProcess(of(
+    public void createsAndWaitsForDelayUntilTimerIsTriggered() {
+        String testBusinessKey = "TestBusinessKey";
+        ProcessInstance processInstance = startCreateTaskProcessWithBusinessKey(of(
             "taskId", "provideRespondentEvidence",
             "group", EXPECTED_GROUP,
             "dueDate", DUE_DATE_STRING,
             "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        ));
+            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        ), testBusinessKey);
 
-        JobQuery jobQuery = managementService.createJobQuery().processInstanceId(processInstance.getId());
-        managementService.executeJob(jobQuery.singleResult().getId());
+        ActivityInstance activityInstance = runtimeService().getActivityInstance(processInstance.getId());
+        ActivityInstance[] childActivityInstances = activityInstance.getChildActivityInstances();
 
+        // only timer activity is created
+        assertTrue(childActivityInstances.length == 1);
+        assertTrue(childActivityInstances[0].getActivityType().equals("intermediateTimer"));
         assertThat(processInstance).isStarted()
-            .task()
-            .hasDefinitionKey(PROCESS_TASK)
-            .hasCandidateGroup(EXPECTED_GROUP)
-            .hasDueDate(DUE_DATE_DATE)
-            .hasName(TASK_NAME)
-            .isNotAssigned();
-        assertThat(processInstance)
-            .job();
-        complete(task(PROCESS_TASK));
-        assertThat(processInstance).isEnded();
-    }
+            .task().isNull();
 
-    @Test
-    @Ignore
-    @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void createsAndCompletesATaskWithoutADueDate() {
-        Map<String, Object> processVariables = new HashMap<>();
-        processVariables.put("taskId", "provideRespondentEvidence");
-        processVariables.put("group", EXPECTED_GROUP);
-        processVariables.put("dueDate", null);
-        processVariables.put("name", TASK_NAME);
-        processVariables.put("delayUntil", ZonedDateTime.now().plusSeconds(1)
-            .format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        ProcessInstance processInstance = startCreateTaskProcess(processVariables);
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("processStartTimer");
 
-        JobQuery jobQuery = managementService.createJobQuery().processInstanceId(processInstance.getId());
-        managementService.executeJob(jobQuery.singleResult().getId());
 
-        assertThat(processInstance).isStarted()
-            .task()
-            .hasDefinitionKey(PROCESS_TASK)
-            .hasCandidateGroup(EXPECTED_GROUP)
-            .hasName(TASK_NAME)
-            .isNotAssigned();
-
-        Date dueDate = task().getDueDate();
-        Date expectedDueDate = from(LocalDate.now().plusDays(2).atStartOfDay().toInstant(ZoneOffset.UTC));
-        assertTrue(
-            "Expected [" + dueDate + "] to be on [" + expectedDueDate + "]",
-            isSameDay(dueDate, expectedDueDate)
-        );
-
-        Date jobDueDate = job().getDuedate();
-        assertTrue(
-            "Expected [" + jobDueDate + "] to be on [" + expectedDueDate + "]",
-            isSameDay(jobDueDate, expectedDueDate)
-        );
-        complete(task(PROCESS_TASK));
-        assertThat(processInstance).isEnded();
+        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", testBusinessKey);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
     }
 
     @Test
