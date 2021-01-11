@@ -29,8 +29,8 @@
       <bpmn:outgoing>Flow_000q9nr</bpmn:outgoing>
       <bpmn:escalationEventDefinition id="EscalationEventDefinition_0wsk9z8" camunda:escalationCodeVariable="wa-esc-cancellation" />
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_000q9nr" sourceRef="Event_0pjf0p1" targetRef="Event_16c3ndw" />
-    <bpmn:endEvent id="Event_16c3ndw">
+    <bpmn:sequenceFlow id="Flow_000q9nr" sourceRef="Event_0pjf0p1" targetRef="userTaskTerminated" />
+    <bpmn:endEvent id="userTaskTerminated" name="User task terminated">
       <bpmn:incoming>Flow_000q9nr</bpmn:incoming>
       <bpmn:terminateEventDefinition id="TerminateEventDefinition_0sajioj" />
     </bpmn:endEvent>
@@ -117,8 +117,11 @@
       <bpmndi:BPMNShape id="Event_1rf35yg_di" bpmnElement="cancelledTasksCompleted">
         <dc:Bounds x="682" y="512" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0spho4n_di" bpmnElement="Event_16c3ndw">
+      <bpmndi:BPMNShape id="Event_0spho4n_di" bpmnElement="userTaskTerminated">
         <dc:Bounds x="902" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="894" y="125" width="52" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1e6ls8v_di" bpmnElement="processStartTimer">
         <dc:Bounds x="352" y="209" width="36" height="36" />
