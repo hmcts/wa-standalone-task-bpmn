@@ -67,12 +67,16 @@
       <bpmn:outgoing>Flow_078o46j</bpmn:outgoing>
       <bpmn:outgoing>Flow_05z430k</bpmn:outgoing>
     </bpmn:exclusiveGateway>
-    <bpmn:sequenceFlow id="Flow_078o46j" name="no" sourceRef="Gateway_1630pti" targetRef="processStartTimer" />
+    <bpmn:sequenceFlow id="Flow_078o46j" name="no" sourceRef="Gateway_1630pti" targetRef="processStartTimer">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isDuplicate==false}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
     <bpmn:endEvent id="Event_1k24qth" name="already handled">
       <bpmn:incoming>Flow_05z430k</bpmn:incoming>
       <bpmn:terminateEventDefinition id="TerminateEventDefinition_0l1bfi9" />
     </bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_05z430k" name="yes" sourceRef="Gateway_1630pti" targetRef="Event_1k24qth" />
+    <bpmn:sequenceFlow id="Flow_05z430k" name="yes" sourceRef="Gateway_1630pti" targetRef="Event_1k24qth">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${isDuplicate==true}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
   </bpmn:process>
   <bpmn:message id="Message_1wn1xe7" name="Message_1tqgb06" />
   <bpmn:message id="Message_059jkd9" name="Message_2e8dj6o" />
