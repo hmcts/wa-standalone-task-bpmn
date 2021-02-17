@@ -23,8 +23,9 @@ import static java.util.Map.of;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.assertThat;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.complete;
 import static org.camunda.bpm.engine.test.assertions.ProcessEngineTests.task;
+import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.externalTask;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.runtimeService;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.reform.wastandalonetaskbpmn.ProcessEngineBuilder.getProcessEngine;
 
 
@@ -55,18 +56,20 @@ public class CamundaCreateTaskTest {
             "group", EXPECTED_GROUP,
             "dueDate", DUE_DATE_STRING,
             "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "isDuplicate", false
         ));
 
         ActivityInstance activityInstance = runtimeService().getActivityInstance(processInstance.getId());
         ActivityInstance[] childActivityInstances = activityInstance.getChildActivityInstances();
 
         // only timer activity is created
-        assertTrue(childActivityInstances.length == 1);
-        assertTrue(childActivityInstances[0].getActivityType().equals("intermediateTimer"));
+        assertEquals(1, childActivityInstances.length);
+        assertEquals("serviceTask", childActivityInstances[0].getActivityType());
         assertThat(processInstance).isStarted()
             .task().isNull();
-        BpmnAwareTests.assertThat(processInstance).isWaitingAt("processStartTimer");
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
+        BpmnAwareTests.complete(externalTask());
 
         JobQuery jobQuery = managementService.createJobQuery().processInstanceId(processInstance.getId());
         // will execute the delayUtil timer manually
@@ -75,8 +78,8 @@ public class CamundaCreateTaskTest {
         activityInstance = runtimeService().getActivityInstance(processInstance.getId());
         childActivityInstances = activityInstance.getChildActivityInstances();
 
-        assertTrue(childActivityInstances.length == 1);
-        assertTrue(childActivityInstances[0].getActivityId().equals(PROCESS_TASK));
+        assertEquals(1, childActivityInstances.length);
+        assertEquals(childActivityInstances[0].getActivityId(), PROCESS_TASK);
 
         assertThat(processInstance).isStarted()
             .task()
@@ -100,20 +103,22 @@ public class CamundaCreateTaskTest {
             "group", EXPECTED_GROUP,
             "dueDate", DUE_DATE_STRING,
             "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "isDuplicate", false
         ), testBusinessKey);
 
         ActivityInstance activityInstance = runtimeService().getActivityInstance(processInstance.getId());
         ActivityInstance[] childActivityInstances = activityInstance.getChildActivityInstances();
 
-        // only timer activity is created
-        assertTrue(childActivityInstances.length == 1);
-        assertTrue(childActivityInstances[0].getActivityType().equals("intermediateTimer"));
+        assertEquals(1, childActivityInstances.length);
+        assertEquals("serviceTask", childActivityInstances[0].getActivityType());
         assertThat(processInstance).isStarted()
             .task().isNull();
 
-        BpmnAwareTests.assertThat(processInstance).isWaitingAt("processStartTimer");
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
+        BpmnAwareTests.complete(externalTask());
 
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("processStartTimer");
 
         processEngineRule.getRuntimeService().correlateMessage("cancelTasks", testBusinessKey);
         BpmnAwareTests.assertThat(processInstance).isEnded();
@@ -128,8 +133,12 @@ public class CamundaCreateTaskTest {
             "group", EXPECTED_GROUP,
             "dueDate", DUE_DATE_STRING,
             "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "isDuplicate", false
         ), testBusinessKey);
+
+        BpmnAwareTests.assertThat(createTaskAndCancel).isWaitingAt("idempotencyCheck");
+        BpmnAwareTests.complete(externalTask());
 
         JobQuery jobQuery = managementService.createJobQuery().processInstanceId(createTaskAndCancel.getId());
         managementService.executeJob(jobQuery.singleResult().getId());
@@ -147,6 +156,29 @@ public class CamundaCreateTaskTest {
         assertThat(createTaskAndCancel).isEnded();
 
     }
+
+    @Test
+    @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
+    public void createsAndWaitsAtExternalTask() {
+        ProcessInstance processInstance = startCreateTaskProcess(of(
+            "taskId", "provideRespondentEvidence",
+            "group", EXPECTED_GROUP,
+            "dueDate", DUE_DATE_STRING,
+            "name", TASK_NAME,
+            "delayUntil", ZonedDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "isDuplicate", false
+        ));
+
+        ActivityInstance activityInstance = runtimeService().getActivityInstance(processInstance.getId());
+        ActivityInstance[] childActivityInstances = activityInstance.getChildActivityInstances();
+
+        assertEquals(1, childActivityInstances.length);
+        assertEquals("serviceTask", childActivityInstances[0].getActivityType());
+        assertThat(processInstance).isStarted()
+            .task().isNull();
+        BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
+    }
+
 
     private ProcessInstance startCreateTaskProcess(Map<String, Object> processVariables) {
         return processEngineRule.getRuntimeService()
