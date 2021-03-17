@@ -14,6 +14,7 @@ import org.junit.Test;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.time.ZonedDateTime.now;
@@ -127,13 +128,15 @@ public class CamundaCreateTaskTest {
     public void createsAndCancelACamundaTask() {
         String testBusinessKey = "TestBusinessKey";
 
-        ProcessInstance createTaskAndCancel = startCreateTaskProcessWithBusinessKey(of(
-            "group", EXPECTED_GROUP,
-            "dueDate", DUE_DATE_STRING,
-            "name", TASK_NAME,
-            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
-            "isDuplicate", false
-        ), testBusinessKey);
+        Map<String, Object> processVariables = new HashMap<>();
+        processVariables.put("group", EXPECTED_GROUP);
+        processVariables.put("dueDate", DUE_DATE_STRING);
+        processVariables.put("name", TASK_NAME);
+        processVariables.put("delayUntil", null);
+        processVariables.put("isDuplicate", false);
+
+        ProcessInstance createTaskAndCancel = startCreateTaskProcessWithBusinessKey(
+            processVariables, testBusinessKey);
 
         BpmnAwareTests.assertThat(createTaskAndCancel).isWaitingAt("idempotencyCheck");
         BpmnAwareTests.complete(externalTask());
@@ -149,6 +152,7 @@ public class CamundaCreateTaskTest {
             .isNotAssigned();
         assertThat(createTaskAndCancel).isWaitingAt(PROCESS_TASK);
 
+        BpmnAwareTests.assertThat(createTaskAndCancel).hasVariables("delayUntil").isNotNull();
 
         processEngineRule.getRuntimeService().correlateMessage("cancelTasks", testBusinessKey);
         assertThat(createTaskAndCancel).isEnded();

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0krfa3s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.5.0">
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0krfa3s" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="4.4.0">
   <bpmn:message id="Message_1pi3bbk" name="createTaskMessage" />
   <bpmn:process id="wa-task-initiation-ia-asylum" name="Create User Task" isExecutable="true">
     <bpmn:endEvent id="userTaskCompleted" name="User task completed">
@@ -38,7 +38,7 @@
       <bpmn:incoming>Flow_078o46j</bpmn:incoming>
       <bpmn:outgoing>Flow_0mvvsq2</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0bz05im">
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${delayUntil}</bpmn:timeDate>
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${delayUntil != null ? delayUntil : 'PT1S'}</bpmn:timeDate>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_1azvh3y" sourceRef="createTaskMessage" targetRef="idempotencyCheck" />
@@ -105,6 +105,24 @@
   <bpmn:message id="Message_0dksf5o" name="warnProcess" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="wa-task-initiation-ia-asylum">
+      <bpmndi:BPMNEdge id="Flow_05z430k_di" bpmnElement="Flow_05z430k">
+        <di:waypoint x="530" y="265" />
+        <di:waypoint x="530" y="332" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="536" y="296" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_078o46j_di" bpmnElement="Flow_078o46j">
+        <di:waypoint x="555" y="240" />
+        <di:waypoint x="662" y="240" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="602" y="222" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_187ot1x_di" bpmnElement="Flow_187ot1x">
+        <di:waypoint x="410" y="240" />
+        <di:waypoint x="505" y="240" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1azvh3y_di" bpmnElement="Flow_1azvh3y">
         <di:waypoint x="218" y="240" />
         <di:waypoint x="310" y="240" />
@@ -122,24 +140,6 @@
         <di:waypoint x="890" y="240" />
         <di:waypoint x="1132" y="240" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_187ot1x_di" bpmnElement="Flow_187ot1x">
-        <di:waypoint x="410" y="240" />
-        <di:waypoint x="505" y="240" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_078o46j_di" bpmnElement="Flow_078o46j">
-        <di:waypoint x="555" y="240" />
-        <di:waypoint x="662" y="240" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="602" y="222" width="13" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_05z430k_di" bpmnElement="Flow_05z430k">
-        <di:waypoint x="530" y="265" />
-        <di:waypoint x="530" y="332" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="536" y="296" width="18" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0mqu4ld_di" bpmnElement="userTaskCompleted">
         <dc:Bounds x="1132" y="222" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -153,21 +153,6 @@
         <dc:Bounds x="182" y="222" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="156" y="265" width="90" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qsrfk2_di" bpmnElement="idempotencyCheck">
-        <dc:Bounds x="310" y="200" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_1630pti_di" bpmnElement="Gateway_1630pti" isMarkerVisible="true">
-        <dc:Bounds x="505" y="215" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="501" y="185" width="60" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1k24qth_di" bpmnElement="Event_1k24qth">
-        <dc:Bounds x="512" y="332" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="491" y="375" width="79" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1ujt1n5_di" bpmnElement="cancelSubProcess" isExpanded="true">
@@ -223,6 +208,21 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0aty9pt_di" bpmnElement="Activity_1etkl8e">
         <dc:Bounds x="390" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qsrfk2_di" bpmnElement="idempotencyCheck">
+        <dc:Bounds x="310" y="200" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1630pti_di" bpmnElement="Gateway_1630pti" isMarkerVisible="true">
+        <dc:Bounds x="505" y="215" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="185" width="60" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1k24qth_di" bpmnElement="Event_1k24qth">
+        <dc:Bounds x="512" y="332" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="491" y="375" width="79" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1x0xdl7_di" bpmnElement="Event_0pjf0p1">
         <dc:Bounds x="822" y="182" width="36" height="36" />
