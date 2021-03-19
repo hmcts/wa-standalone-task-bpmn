@@ -11,10 +11,10 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 import static java.time.ZonedDateTime.now;
@@ -128,15 +128,13 @@ public class CamundaCreateTaskTest {
     public void createsAndCancelACamundaTask() {
         String testBusinessKey = "TestBusinessKey";
 
-        Map<String, Object> processVariables = new HashMap<>();
-        processVariables.put("group", EXPECTED_GROUP);
-        processVariables.put("dueDate", DUE_DATE_STRING);
-        processVariables.put("name", TASK_NAME);
-        processVariables.put("delayUntil", null);
-        processVariables.put("isDuplicate", false);
-
-        ProcessInstance createTaskAndCancel = startCreateTaskProcessWithBusinessKey(
-            processVariables, testBusinessKey);
+        ProcessInstance createTaskAndCancel = startCreateTaskProcessWithBusinessKey(of(
+            "group", EXPECTED_GROUP,
+            "dueDate", DUE_DATE_STRING,
+            "name", TASK_NAME,
+            "delayUntil", ZonedDateTime.now().plusSeconds(1).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+            "isDuplicate", false
+        ), testBusinessKey);
 
         BpmnAwareTests.assertThat(createTaskAndCancel).isWaitingAt("idempotencyCheck");
         BpmnAwareTests.complete(externalTask());
@@ -152,7 +150,43 @@ public class CamundaCreateTaskTest {
             .isNotAssigned();
         assertThat(createTaskAndCancel).isWaitingAt(PROCESS_TASK);
 
-        BpmnAwareTests.assertThat(createTaskAndCancel).hasVariables("delayUntil").isNotNull();
+
+        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", testBusinessKey);
+        assertThat(createTaskAndCancel).isEnded();
+
+    }
+
+    @Test
+    @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
+    public void createsAndCancelACamundaTaskWithOutDelayUntilTimerVariable() {
+        String testBusinessKey = "TestBusinessKey";
+
+        ProcessInstance createTaskAndCancel = startCreateTaskProcessWithBusinessKey(of(
+            "group", EXPECTED_GROUP,
+            "dueDate", DUE_DATE_STRING,
+            "name", TASK_NAME,
+            "isDuplicate", false
+        ), testBusinessKey);
+
+        BpmnAwareTests.assertThat(createTaskAndCancel).isWaitingAt("idempotencyCheck");
+        BpmnAwareTests.complete(externalTask());
+
+        JobQuery jobQuery = managementService.createJobQuery().processInstanceId(createTaskAndCancel.getId());
+
+        final Date duedate = jobQuery.singleResult().getDuedate();
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        assertEquals("2000-01-01T00:00:00", sdf.format(duedate));
+
+        managementService.executeJob(jobQuery.singleResult().getId());
+
+        assertThat(createTaskAndCancel).isStarted()
+            .task()
+            .hasDefinitionKey(PROCESS_TASK)
+            .hasCandidateGroup(EXPECTED_GROUP)
+            .hasName(TASK_NAME)
+            .isNotAssigned();
+        assertThat(createTaskAndCancel).isWaitingAt(PROCESS_TASK);
+
 
         processEngineRule.getRuntimeService().correlateMessage("cancelTasks", testBusinessKey);
         assertThat(createTaskAndCancel).isEnded();

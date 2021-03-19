@@ -38,7 +38,9 @@
       <bpmn:incoming>Flow_078o46j</bpmn:incoming>
       <bpmn:outgoing>Flow_0mvvsq2</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0bz05im">
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${delayUntil != null ? delayUntil : '2000-01-01T00:00:00'}</bpmn:timeDate>
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">
+        ${execution.hasVariable('delayUntil') ? delayUntil : '2000-01-01T00:00:00'}
+        </bpmn:timeDate>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_1azvh3y" sourceRef="createTaskMessage" targetRef="idempotencyCheck" />
