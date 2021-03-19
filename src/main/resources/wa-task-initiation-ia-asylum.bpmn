@@ -5,7 +5,7 @@
     <bpmn:endEvent id="userTaskCompleted" name="User task completed">
       <bpmn:incoming>Flow_1t5gjw4</bpmn:incoming>
     </bpmn:endEvent>
-    <bpmn:userTask id="processTask" name="${name}" camunda:formKey="${taskId}" camunda:candidateGroups="${group}" camunda:dueDate="${dueDate != null ? dueDate : &#39;2000-01-01T00:00:00&#39;}">
+    <bpmn:userTask id="processTask" name="${name}" camunda:formKey="${taskId}" camunda:candidateGroups="${group}" camunda:dueDate="${dueDate != null ? dueDate : &#39;P2D&#39;}">
       <bpmn:incoming>Flow_0mvvsq2</bpmn:incoming>
       <bpmn:outgoing>Flow_1t5gjw4</bpmn:outgoing>
     </bpmn:userTask>
@@ -38,7 +38,7 @@
       <bpmn:incoming>Flow_078o46j</bpmn:incoming>
       <bpmn:outgoing>Flow_0mvvsq2</bpmn:outgoing>
       <bpmn:timerEventDefinition id="TimerEventDefinition_0bz05im">
-        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${delayUntil != null ? delayUntil : 'PT1S'}</bpmn:timeDate>
+        <bpmn:timeDate xsi:type="bpmn:tFormalExpression">${delayUntil != null ? delayUntil : '2000-01-01T00:00:00'}</bpmn:timeDate>
       </bpmn:timerEventDefinition>
     </bpmn:intermediateCatchEvent>
     <bpmn:sequenceFlow id="Flow_1azvh3y" sourceRef="createTaskMessage" targetRef="idempotencyCheck" />
