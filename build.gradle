@@ -4,10 +4,10 @@ plugins {
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-  id 'org.springframework.boot' version '2.3.5.RELEASE'
-  id 'com.github.ben-manes.versions' version '0.36.0'
-  id 'org.owasp.dependencycheck' version '6.1.1'
-  id 'org.sonarqube' version '3.1.1'
+  id 'org.springframework.boot' version '2.4.9'
+  id 'com.github.ben-manes.versions' version '0.38.0'
+  id 'org.owasp.dependencycheck' version '6.1.6'
+  id 'org.sonarqube' version '3.2.0'
   id 'info.solidsoft.pitest' version '1.5.2'
 
 }
@@ -180,10 +180,6 @@ dependencyManagement {
     dependencySet(group: 'com.google.guava', version: '30.1-jre') {
       entry 'guava'
     }
-    //CVE-2021-22118
-    dependencySet(group: 'org.springframework', version: '5.2.15.RELEASE') {
-      entry 'spring-core'
-    }
   }
 }
 
@@ -194,8 +190,8 @@ repositories {
 }
 
 def versions = [
-  junit           : '5.7.1',
-  junitPlatform   : '1.7.1',
+  junit           : '5.7.2',
+  junitPlatform   : '1.7.2',
   reformLogging   : '5.1.5',
   springBoot      : '2.4.2',
   springfoxSwagger: '2.9.2',
@@ -217,23 +213,22 @@ ext.libraries = [
 
 dependencies {
 
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
-
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json'
 
   implementation group: 'io.springfox', name: 'springfox-swagger2', version: versions.springfoxSwagger
 
   implementation group: 'com.github.hmcts.java-logging', name: 'java-logging', version: versions.reformLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'java-logging-appinsights', version: versions.reformLogging
 
-  compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
-  compile group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.0'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.14.0'
+  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.14.0'
 
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.43'
-  compile group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.43'
-  compile group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: '1.4.1'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.43'
+  implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '9.0.43'
+  implementation 'org.camunda.bpm:camunda-external-task-client:7.15.0'
 
   testCompile group: 'org.pitest', name: 'pitest', version: versions.pitest
   testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.5.2'
@@ -251,8 +246,9 @@ dependencies {
   testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: "${versions.camunda}"
   testImplementation group: 'org.camunda.bpm.assert', name: 'camunda-bpm-assert', version: '8.0.0'
   testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: '7.14.0'
-  testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
   testImplementation group: 'org.camunda.bpm.extension', name: 'camunda-bpm-junit5', version: '1.0.0'
+
+  testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
   integrationTestImplementation "org.junit.vintage:junit-vintage-engine:${versions.junit}"
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
