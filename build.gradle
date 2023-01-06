@@ -260,7 +260,7 @@ ext.libraries = [
   ]
 ]
 
-ext['snakeyaml.version'] = '1.32'
+ext['snakeyaml.version'] = '1.33'
 
 dependencies {
 
@@ -279,9 +279,10 @@ dependencies {
 
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '10.1.4'
   implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.1.4'
-  implementation group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: '7.17.0'
+  implementation group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: '7.19.0-alpha2'
 
   testImplementation group: 'org.pitest', name: 'pitest', version: '1.10.3'
+  testImplementation group: 'junit', name: 'junit', version: '4.13.2'
   testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.9.11'
 
   testImplementation "org.junit.vintage:junit-vintage-engine:5.9.0"
@@ -294,9 +295,9 @@ dependencies {
 
   testImplementation "org.junit.vintage:junit-vintage-engine:5.9.0"
 
-  testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: '7.17.0'
+  testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: '7.19.0-alpha2'
   testImplementation group: 'org.camunda.bpm.assert', name: 'camunda-bpm-assert', version: '15.0.0'
-  testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: '7.17.0'
+  testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: '7.19.0-alpha2'
   testImplementation group: 'org.camunda.bpm.extension', name: 'camunda-bpm-junit5', version: '1.0.2'
 
   testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
