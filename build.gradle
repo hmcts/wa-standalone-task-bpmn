@@ -260,7 +260,7 @@ ext.libraries = [
   ]
 ]
 
-ext['snakeyaml.version'] = '1.32'
+ext['snakeyaml.version'] = '1.33'
 
 dependencies {
 
