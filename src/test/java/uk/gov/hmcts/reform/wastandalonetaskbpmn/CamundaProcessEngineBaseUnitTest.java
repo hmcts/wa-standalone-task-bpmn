@@ -61,7 +61,6 @@ public abstract class CamundaProcessEngineBaseUnitTest {
         Map<String, Object> variables = new HashMap<>();
         variables.put("taskId", "provideRespondentEvidence");
         variables.put("taskType", "provideRespondentEvidence");
-        variables.put("group", "TCW");
         variables.put("dueDate", dueDate.format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN)));
         variables.put("name", "Provide respondent evidence");
         variables.put("taskState", "configured");
@@ -104,7 +103,6 @@ public abstract class CamundaProcessEngineBaseUnitTest {
         BpmnAwareTests.assertThat(processInstance).isStarted()
             .task()
             .hasDefinitionKey("processTask")
-            .hasCandidateGroup("TCW")
             .hasName("Provide respondent evidence")
             .isNotAssigned();
 
@@ -128,14 +126,13 @@ public abstract class CamundaProcessEngineBaseUnitTest {
         assertTrue(taskVariables.containsKey("taskId"));
         assertTrue(taskVariables.containsKey("dueDate"));
         assertTrue(taskVariables.containsKey("isDuplicate"));
-        assertTrue(taskVariables.containsKey("group"));
 
         //If something else gets added this should fail and act as a safe-guard
         if (withDelayUntil) {
             assertTrue(taskVariables.containsKey("delayUntil"));
-            assertEquals(15, taskVariables.size());
-        } else {
             assertEquals(14, taskVariables.size());
+        } else {
+            assertEquals(13, taskVariables.size());
         }
 
         return processInstance;

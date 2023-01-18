@@ -36,7 +36,6 @@ public class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUni
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("taskId", "provideRespondentEvidence");
-        variables.put("group", "TCW");
         variables.put("dueDate", dueDate.format(ISO_INSTANT));
         variables.put("name", "Provide respondent evidence");
         variables.put("taskState", "configured");
@@ -65,7 +64,6 @@ public class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUni
 
         Map<String, Object> variables = new HashMap<>();
         variables.put("taskId", "provideRespondentEvidence");
-        variables.put("group", "TCW");
         variables.put("dueDate", dueDate.format(ISO_INSTANT));
         variables.put("name", "Provide respondent evidence");
         variables.put("taskState", "configured");
