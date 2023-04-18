@@ -204,7 +204,7 @@ dependencyManagement {
       entry 'logback-core'
     }
 
-    dependencySet( group: 'org.springframework.security', version: '6.0.2'){
+    dependencySet( group: 'org.springframework.security', version: '6.0.3'){
       entry 'spring-boot-starter-security'
       entry 'spring-security-core'
       entry 'spring-security-acl'
