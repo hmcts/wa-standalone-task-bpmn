@@ -23,12 +23,9 @@
     </notes>
     <cve>CVE-2016-9878</cve>
   </suppress>
-  <suppress until ="2023-08-31">
-    <notes>Wait for spring boot upgrades</notes>
+  <suppress until ="2023-09-30">
+     <notes>False positive: Jackson community does not consider this a security issue (https://github.com/FasterXML/jackson-databind/issues/3972)
+      Wait for spring boot upgrades</notes>
     <cve>CVE-2023-35116</cve>
-  </suppress>
-  <suppress until ="2023-08-31">
-    <notes>Wait for spring boot upgrades</notes>
-    <cve>CVE-2023-2976</cve>
   </suppress>
 </suppressions>
