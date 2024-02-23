@@ -235,7 +235,7 @@ repositories {
 }
 
 def versions = [
-  junit           : '5.9.3',
+  junit           : '5.10.2',
   junitPlatform   : '1.9.3',
   reformLogging   : '6.0.1',
   springBoot      : '3.1.6',
@@ -259,6 +259,8 @@ dependencies {
   implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
 
   implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDoc
+
+  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.26.0'
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.19'
