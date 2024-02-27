@@ -1,16 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
-  <suppress until ="2024-02-29">
-     <notes>False positive: Jackson community does not consider this a security issue (https://github.com/FasterXML/jackson-databind/issues/3972)
-      Wait for spring boot upgrades</notes>
-    <cve>CVE-2023-35116</cve>
-  </suppress>
-  <suppress until ="2024-02-29">
-    <notes>Logback can't be upgraded</notes>
-    <cve>CVE-2023-6378</cve>
-  </suppress>
-  <suppress until ="2024-02-29">
-    <notes>Dependency-management-plugin waiting on upgrades</notes>
-    <cve>CVE-2016-9878</cve>
-  </suppress>
 </suppressions>
