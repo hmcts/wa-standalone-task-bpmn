@@ -270,6 +270,8 @@ dependencies {
 
   implementation group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: versions.camunda
 
+  implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.4.12'
+
   testImplementation group: 'org.pitest', name: 'pitest', version: versions.pitest
   testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
 
