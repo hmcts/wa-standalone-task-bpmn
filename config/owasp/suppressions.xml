@@ -5,7 +5,11 @@
       Wait for spring boot upgrades</notes>
     <cve>CVE-2023-35116</cve>
   </suppress>
-  <suppress until ="2024-04-05">
+  <suppress until ="2024-05-03">
+    <notes>Logback can't be upgraded</notes>
+    <cve>CVE-2023-6378</cve>
+  </suppress>
+  <suppress until ="2024-05-03">
     <notes>Dependency-management-plugin waiting on upgrades</notes>
     <cve>CVE-2016-9878</cve>
   </suppress>

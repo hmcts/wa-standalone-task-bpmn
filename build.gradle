@@ -197,9 +197,7 @@ dependencyManagement {
     dependencySet(group: 'com.google.guava', version: '33.0.0-jre') {
       entry 'guava'
     }
-    dependencySet(group: 'ch.qos.logback', version: '1.4.12') {
-      entry 'logback-core'
-    }
+
     //CVE-2021-28170
     dependency group: 'org.glassfish', name: 'jakarta.el', version: '4.0.2'
 
