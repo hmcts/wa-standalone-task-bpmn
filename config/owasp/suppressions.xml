@@ -4,5 +4,10 @@
      <notes>False positive: Jackson community does not consider this a security issue (https://github.com/FasterXML/jackson-databind/issues/3972)
       Wait for spring boot upgrades</notes>
     <cve>CVE-2023-35116</cve>
-    </suppress>
+  </suppress>
+  <suppress until ="2024-07-05">
+    <notes>Dependency-management-plugin waiting on upgrades
+    spring framework dependent on spring boot upgrade</notes>
+    <cve>CVE-2016-9878</cve>
+  </suppress>
 </suppressions>
