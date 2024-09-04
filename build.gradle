@@ -238,7 +238,7 @@ def versions = [
   junit           : '5.11.0',
   junitPlatform   : '1.11.0',
   reformLogging   : '6.1.6',
-  springBoot      : '3.2.5',
+  springBoot      : '3.2.9',
   springDoc       : '2.5.0',
   camunda         : '7.21.0',
   pitest          : '1.16.1',
