@@ -109,7 +109,7 @@ checkstyle {
 }
 
 pmd {
-  toolVersion = "7.0.0"
+  toolVersion = "7.5.0"
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/pmd")
   // https://github.com/pmd/pmd/issues/876
@@ -239,7 +239,7 @@ def versions = [
   junitPlatform   : '1.11.0',
   reformLogging   : '6.1.6',
   springBoot      : '3.2.5',
-  springDoc       : '2.5.0',
+  springDoc       : '2.6.0',
   camunda         : '7.21.0',
   pitest          : '1.16.1',
   sonarPitest     : '0.5'
