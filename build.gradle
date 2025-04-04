@@ -240,7 +240,7 @@ def versions = [
   reformLogging   : '6.1.8',
   springBoot      : '3.4.1',
   springDoc       : '2.8.6',
-  camunda         : '7.22.0',
+  camunda         : '7.23.0',
   pitest          : '1.16.3',
   sonarPitest     : '0.5'
 
