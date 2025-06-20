@@ -241,7 +241,7 @@ def versions = [
   springBoot      : '3.4.1',
   springDoc       : '2.8.8',
   camunda         : '7.23.0',
-  pitest          : '1.19.6',
+  pitest          : '1.20.0',
   sonarPitest     : '0.5'
 
 ]
