@@ -244,8 +244,8 @@ repositories {
 }
 
 def versions = [
-  junit           : '5.13.4',
-  junitPlatform   : '1.13.4',
+  junit           : '5.14.0',
+  junitPlatform   : '1.14.0',
   reformLogging   : '6.1.9',
   springBoot      : '3.5.5',
   springDoc       : '2.8.13',
@@ -302,7 +302,7 @@ dependencies {
   testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: versions.camunda
   testImplementation group: 'org.camunda.bpm.extension', name: 'camunda-bpm-junit5', version: '1.1.0'
 
-  testImplementation group: 'com.h2database', name: 'h2', version: '2.3.232'
+  testImplementation group: 'com.h2database', name: 'h2', version: '2.4.240'
   integrationTestImplementation "org.junit.vintage:junit-vintage-engine:${versions.junit}"
   testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.9', classifier: 'all'
 
