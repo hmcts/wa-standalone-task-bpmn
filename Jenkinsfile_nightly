@@ -12,4 +12,9 @@ def product = "wa"
 def component = "standalone-task-bpmn"
 
 withNightlyPipeline(type, product, component) {
+  enableFortifyScan()
+
+  afterSuccess('fortify-scan') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+  }
 }
