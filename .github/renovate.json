@@ -30,7 +30,7 @@
         "minor",
         "patch"
       ],
-      "automerge": true
+      "automerge": false
     },
     {
       "matchDatasources": [
@@ -92,6 +92,7 @@
         "patch"
       ],
       "prPriority": 20,
+      "automerge": false,
       "groupName": "Automated Checks - Non Major",
       "automergeSchedule": "after 8am and before 11am every first day of month"
     },
@@ -108,6 +109,7 @@
         "patch"
       ],
       "prPriority": 20,
+      "automerge": false,
       "groupName": "Testing Dependencies - Non Major",
       "automergeSchedule": "after 8am and before 11am every Monday"
     }
