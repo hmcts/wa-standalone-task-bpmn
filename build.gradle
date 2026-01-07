@@ -115,7 +115,7 @@ checkstyle {
 }
 
 pmd {
-  toolVersion = "7.19.0"
+  toolVersion = "7.20.0"
   sourceSets = [sourceSets.main]
   reportsDir = layout.buildDirectory.dir("reports/pmd").get().asFile
   // https://github.com/pmd/pmd/issues/876
@@ -244,9 +244,9 @@ repositories {
 }
 
 def versions = [
-  junit           : '5.14.2',
-  junitPlatform   : '1.14.2',
-  reformLogging   : '6.1.9',
+  junit           : '6.0.2',
+  junitPlatform   : '6.0.2',
+  reformLogging   : '7.0.0',
   springBoot      : '3.5.9',
   springDoc       : '2.8.15',
   camunda         : '7.24.0',
