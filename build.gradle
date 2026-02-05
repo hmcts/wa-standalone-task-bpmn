@@ -115,7 +115,7 @@ checkstyle {
 }
 
 pmd {
-  toolVersion = "7.20.0"
+  toolVersion = "7.21.0"
   sourceSets = [sourceSets.main]
   reportsDir = layout.buildDirectory.dir("reports/pmd").get().asFile
   // https://github.com/pmd/pmd/issues/876
