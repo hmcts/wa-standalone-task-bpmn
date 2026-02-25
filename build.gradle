@@ -246,7 +246,7 @@ repositories {
 def versions = [
   junit           : '6.0.3',
   junitPlatform   : '6.0.3',
-  reformLogging   : '7.0.0',
+  reformLogging   : '8.0.0',
   springBoot      : '3.5.11',
   springDoc       : '2.8.15',
   camunda         : '7.24.0',
