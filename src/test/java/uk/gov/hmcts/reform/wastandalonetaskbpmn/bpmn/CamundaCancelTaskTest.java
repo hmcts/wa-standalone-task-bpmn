@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn.bpmn;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
 public class CamundaCancelTaskTest extends CamundaProcessEngineBaseUnitTest {
@@ -15,7 +15,7 @@ public class CamundaCancelTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         ProcessInstance processInstance = createTask(true);
 
-        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
         BpmnAwareTests.assertThat(processInstance).isEnded();
 
     }
@@ -25,7 +25,7 @@ public class CamundaCancelTaskTest extends CamundaProcessEngineBaseUnitTest {
     public void should_create_a_task_with_no_delay_until_and_cancel_the_task_after_receiving_cancellation_message() {
         ProcessInstance processInstance = createTask(false);
 
-        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
         BpmnAwareTests.assertThat(processInstance).isEnded();
 
     }

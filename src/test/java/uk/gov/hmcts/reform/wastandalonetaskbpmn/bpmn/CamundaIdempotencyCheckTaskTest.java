@@ -21,7 +21,7 @@ class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     @AfterEach
     void tearDown() {
-        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
         BpmnAwareTests.assertThat(processInstance).isEnded();
     }
 

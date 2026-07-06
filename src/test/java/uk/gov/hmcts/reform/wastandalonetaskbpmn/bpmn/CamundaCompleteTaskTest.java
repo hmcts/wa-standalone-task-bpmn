@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn.bpmn;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
 public class CamundaCompleteTaskTest extends CamundaProcessEngineBaseUnitTest {

@@ -2,13 +2,12 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn.bpmn;
 
 import org.camunda.bpm.engine.MismatchingMessageCorrelationException;
 import org.camunda.bpm.engine.ProcessEngineException;
-import org.camunda.bpm.engine.RepositoryService;
 import org.camunda.bpm.engine.repository.DeploymentBuilder;
 import org.camunda.bpm.engine.repository.DeploymentQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -38,8 +37,6 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         clearDeployments();
 
-        RepositoryService repositoryService = processEngineRule.getRepositoryService();
-
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
             .tenantId("someTenantId");
         deploymentBuilder.addClasspathResource("wa-task-initiation-ia-asylum.bpmn")
@@ -60,8 +57,6 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     public void should_create_a_task_with_and_without_tenant_id_multiple_resources() {
 
         clearDeployments();
-
-        RepositoryService repositoryService = processEngineRule.getRepositoryService();
 
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment()
             .tenantId("someTenantId");
@@ -87,8 +82,6 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         clearDeployments();
 
-        RepositoryService repositoryService = processEngineRule.getRepositoryService();
-
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment();
         deploymentBuilder.addClasspathResource("wa-task-initiation-ia-asylum.bpmn")
             .deploy();
@@ -104,8 +97,6 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         clearDeployments();
 
-        RepositoryService repositoryService = processEngineRule.getRepositoryService();
-
         DeploymentBuilder deploymentBuilder = repositoryService.createDeployment().tenantId("someTenantId");
         deploymentBuilder.addClasspathResource("wa-task-initiation-ia-asylum.bpmn")
             .deploy();
@@ -117,9 +108,9 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     }
 
     private void clearDeployments() {
-        DeploymentQuery deploymentQuery = processEngineRule.getRepositoryService().createDeploymentQuery();
+        DeploymentQuery deploymentQuery = repositoryService.createDeploymentQuery();
         for (org.camunda.bpm.engine.repository.Deployment deployment : deploymentQuery.list()) {
-            processEngineRule.getRepositoryService().deleteDeployment(deployment.getId(), true);
+            repositoryService.deleteDeployment(deployment.getId(), true);
         }
     }
 
