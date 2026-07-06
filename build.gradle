@@ -276,8 +276,8 @@ dependencies {
   implementation "com.github.hmcts.java-logging:logging:${versions.reformLogging}"
   implementation 'com.microsoft.azure:applicationinsights-web:3.7.9'
 
-  implementation 'org.apache.logging.log4j:log4j-api:2.26.0'
-  implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.26.0'
+  implementation 'org.apache.logging.log4j:log4j-api:2.26.1'
+  implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.26.1'
 
   implementation "org.camunda.bpm:camunda-external-task-client:${versions.camunda}"
 
