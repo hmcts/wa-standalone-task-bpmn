@@ -3,8 +3,8 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn.bpmn;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Test;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
 import java.time.ZonedDateTime;
@@ -15,20 +15,19 @@ import java.util.Map;
 import static java.time.ZonedDateTime.now;
 import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 
-public class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
+class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     private ProcessInstance processInstance;
 
     @AfterEach
-    public void tearDown() {
-
+    void tearDown() {
         processEngineRule.getRuntimeService().correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
         BpmnAwareTests.assertThat(processInstance).isEnded();
     }
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_delay_until_and_wait_at_idempotency_check() {
+    void should_create_a_task_with_delay_until_and_wait_at_idempotency_check() {
 
         String delayUntilValue = now().plusSeconds(1).format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN));
 
@@ -58,7 +57,7 @@ public class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUni
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_no_delay_until_and_wait_at_idempotency_check() {
+    void should_create_a_task_with_no_delay_until_and_wait_at_idempotency_check() {
 
         ZonedDateTime dueDate = now().plusDays(7);
 
@@ -82,6 +81,5 @@ public class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUni
         BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
 
     }
-
 
 }

@@ -259,7 +259,7 @@ ext['snakeyaml.version'] = '2.0'
 ext['tomcat.version'] = '10.1.33'
 
 dependencies {
-  implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: versions.springBoot
+  implementation "org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}"
 
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
