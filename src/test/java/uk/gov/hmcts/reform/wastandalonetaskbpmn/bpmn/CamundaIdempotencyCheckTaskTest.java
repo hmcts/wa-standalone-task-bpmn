@@ -3,7 +3,6 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn.bpmn;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
@@ -18,12 +17,6 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     private ProcessInstance processInstance;
-
-    @AfterEach
-    void tearDown() {
-        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
-        BpmnAwareTests.assertThat(processInstance).isEnded();
-    }
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
@@ -53,6 +46,9 @@ class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
         //Check task is waiting at idempotency
         BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
 
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
+
     }
 
     @Test
@@ -79,6 +75,9 @@ class CamundaIdempotencyCheckTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         //Check task is waiting at idempotency
         BpmnAwareTests.assertThat(processInstance).isWaitingAt("idempotencyCheck");
+
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
 
     }
 

@@ -4,7 +4,6 @@ import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
@@ -23,12 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     private ProcessInstance processInstance;
-
-    @AfterEach
-    void tearDown() {
-        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
-        BpmnAwareTests.assertThat(processInstance).isEnded();
-    }
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
@@ -69,6 +62,9 @@ class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         managementService.executeJob(jobQuery.singleResult().getId());
 
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
+
     }
 
     @Test
@@ -107,6 +103,9 @@ class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
         Assertions.assertEquals("2000-01-01T00:00:00", dateFormat.format(processDueDate));
 
         managementService.executeJob(jobQuery.singleResult().getId());
+
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
 
     }
 }
