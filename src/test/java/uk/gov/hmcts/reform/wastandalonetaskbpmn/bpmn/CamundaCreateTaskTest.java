@@ -15,10 +15,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
-public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
+class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_delay_until() {
+    void should_create_a_task_with_delay_until() {
         //helper method has assertions to check the task is raised with a delayUntil attribute
         final ProcessInstance processInstance = createTask(true);
         assertNotNull(processInstance);
@@ -26,14 +26,14 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_no_delay_until() {
+    void should_create_a_task_with_no_delay_until() {
         //helper method has assertions to check the task is raised with no delayUntil attribute
         final ProcessInstance processInstance = createTask(false);
         assertNotNull(processInstance);
     }
 
     @Test
-    public void should_not_create_a_task_with_different_tenant_id_multiple_resource() {
+    void should_not_create_a_task_with_different_tenant_id_multiple_resource() {
 
         clearDeployments();
 
@@ -54,7 +54,7 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     }
 
     @Test
-    public void should_create_a_task_with_and_without_tenant_id_multiple_resources() {
+    void should_create_a_task_with_and_without_tenant_id_multiple_resources() {
 
         clearDeployments();
 
@@ -78,7 +78,7 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     }
 
     @Test
-    public void should_not_create_a_task_without_tenant_id_multiple_resource() {
+    void should_not_create_a_task_without_tenant_id_multiple_resource() {
 
         clearDeployments();
 
@@ -93,7 +93,7 @@ public class CamundaCreateTaskTest extends CamundaProcessEngineBaseUnitTest {
     }
 
     @Test
-    public void should_not_create_a_task_with_same_tenant_id_multiple_resource() {
+    void should_not_create_a_task_with_same_tenant_id_multiple_resource() {
 
         clearDeployments();
 
