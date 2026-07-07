@@ -33,20 +33,14 @@ public abstract class CamundaProcessEngineBaseUnitTest {
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
 
     @RegisterExtension
-    static ProcessEngineExtension processEngineExtension = new AfterEachProcessEngineExtension(INSTANCE);
+    static ProcessEngineExtension processEngineExtension = ProcessEngineExtension.builder()
+        .useProcessEngine(INSTANCE)
+        .build();
 
     public RuntimeService runtimeService;
     public RepositoryService repositoryService;
     public ManagementService managementService;
     public TaskService taskService;
-
-    private static final class AfterEachProcessEngineExtension extends
-        ProcessEngineExtension {
-        private AfterEachProcessEngineExtension(ProcessEngine processEngine) {
-            useProcessEngine(processEngine);
-            build();
-        }
-    }
 
     @BeforeEach
     public void setUp() {
