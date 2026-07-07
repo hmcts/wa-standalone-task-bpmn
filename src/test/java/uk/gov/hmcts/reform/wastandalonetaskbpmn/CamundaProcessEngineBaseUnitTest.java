@@ -43,21 +43,21 @@ public abstract class CamundaProcessEngineBaseUnitTest {
     public TaskService taskService;
 
     private static final class AfterEachProcessEngineExtension extends
-        ProcessEngineExtension implements AfterEachCallback {
+        ProcessEngineExtension {
         private AfterEachProcessEngineExtension(ProcessEngine processEngine) {
             useProcessEngine(processEngine);
             build();
         }
 
-        @Override
-        public void afterTestExecution(ExtensionContext context) {
-            // Defer Camunda @Deployment cleanup until after test @AfterEach methods have run.
-        }
-
-        @Override
-        public void afterEach(ExtensionContext context) {
-            super.afterTestExecution(context);
-        }
+//        @Override
+//        public void afterTestExecution(ExtensionContext context) {
+//            // Defer Camunda @Deployment cleanup until after test @AfterEach methods have run.
+//        }
+//
+//        @Override
+//        public void afterEach(ExtensionContext context) {
+//            super.afterTestExecution(context);
+//        }
     }
 
     @BeforeEach
