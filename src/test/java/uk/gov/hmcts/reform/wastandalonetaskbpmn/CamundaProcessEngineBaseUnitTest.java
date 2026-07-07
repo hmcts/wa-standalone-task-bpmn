@@ -48,16 +48,6 @@ public abstract class CamundaProcessEngineBaseUnitTest {
             useProcessEngine(processEngine);
             build();
         }
-
-//        @Override
-//        public void afterTestExecution(ExtensionContext context) {
-//            // Defer Camunda @Deployment cleanup until after test @AfterEach methods have run.
-//        }
-//
-//        @Override
-//        public void afterEach(ExtensionContext context) {
-//            super.afterTestExecution(context);
-//        }
     }
 
     @BeforeEach
