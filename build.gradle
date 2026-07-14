@@ -109,12 +109,12 @@ tasks.register('fortifyScan', JavaExec)  {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '13.6.0'
+  toolVersion = '13.8.0'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
 pmd {
-  toolVersion = "7.25.0"
+  toolVersion = "7.26.0"
   sourceSets = [sourceSets.main]
   reportsDir = layout.buildDirectory.dir("reports/pmd").get().asFile
   // https://github.com/pmd/pmd/issues/876
@@ -188,7 +188,7 @@ dependencyManagement {
     //CVE-2021-28170
     dependency group: 'org.glassfish', name: 'jakarta.el', version: '4.0.2'
 
-    dependencySet( group: 'org.springframework.security', version: '7.0.5'){
+    dependencySet( group: 'org.springframework.security', version: '7.1.0'){
       entry 'spring-boot-starter-security'
       entry 'spring-security-core'
       entry 'spring-security-acl'
@@ -225,8 +225,8 @@ repositories {
 }
 
 def versions = [
-  junit           : '6.1.1',
-  junitPlatform   : '6.1.1',
+  junit           : '6.1.2',
+  junitPlatform   : '6.1.2',
   reformLogging   : '8.0.0',
   springBoot      : '3.5.16',
   springDoc       : '2.8.17',
