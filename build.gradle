@@ -225,8 +225,8 @@ repositories {
 }
 
 def versions = [
-  junit           : '6.1.2',
-  junitPlatform   : '6.1.2',
+  junit           : '5.12.2',
+  junitPlatform   : '1.12.2',
   reformLogging   : '8.0.0',
   springBoot      : '3.5.16',
   springDoc       : '2.8.17',
@@ -266,8 +266,7 @@ dependencies {
   }
   testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
   testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-engine', version: versions.junitPlatform
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
+  testRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-launcher', version: versions.junitPlatform
 
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
 
