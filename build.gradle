@@ -259,52 +259,49 @@ ext['snakeyaml.version'] = '2.0'
 ext['tomcat.version'] = '10.1.33'
 
 dependencies {
-  implementation group: 'org.springframework.boot', name: 'spring-boot-gradle-plugin', version: versions.springBoot
+  implementation "org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}"
 
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBoot
-  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-json', version: versions.springBoot
-  implementation group: 'com.google.guava', name: 'guava', version: '33.6.0-jre'
+  implementation "org.springframework.boot:spring-boot-starter-web:${versions.springBoot}"
+  implementation "org.springframework.boot:spring-boot-starter-actuator:${versions.springBoot}"
+  implementation "org.springframework.boot:spring-boot-starter-aop:${versions.springBoot}"
+  implementation "org.springframework.boot:spring-boot-starter-json:${versions.springBoot}"
+  implementation 'com.google.guava:guava:33.6.0-jre'
 
-  implementation group: 'com.fasterxml.jackson.core',  name: 'jackson-databind', version: '2.22.1'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.0'
 
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDoc
+  implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.springDoc}"
 
-  implementation group: 'org.apache.commons', name: 'commons-compress', version: '1.28.0'
+  implementation 'org.apache.commons:commons-compress:1.28.0'
 
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.7.9'
+  implementation "com.github.hmcts.java-logging:logging:${versions.reformLogging}"
+  implementation 'com.microsoft.azure:applicationinsights-web:3.7.9'
 
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.26.1'
-  implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: '2.26.1'
+  implementation 'org.apache.logging.log4j:log4j-api:2.26.1'
+  implementation 'org.apache.logging.log4j:log4j-to-slf4j:2.26.1'
 
-  implementation group: 'org.camunda.bpm', name: 'camunda-external-task-client', version: versions.camunda
+  implementation "org.camunda.bpm:camunda-external-task-client:${versions.camunda}"
 
-  testImplementation group: 'org.pitest', name: 'pitest', version: versions.pitest
+  testImplementation "org.pitest:pitest:${versions.pitest}"
   testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
 
-  testImplementation group: 'org.codehaus.sonar-plugins', name: 'sonar-pitest-plugin', version: versions.sonarPitest
+  testImplementation "org.codehaus.sonar-plugins:sonar-pitest-plugin:${versions.sonarPitest}"
 
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
-  testImplementation("org.junit.vintage:junit-vintage-engine:${versions.junit}") {
-    exclude group: "org.hamcrest", module: "hamcrest-core"
-  }
-  testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: versions.junit
-  testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-engine', version: versions.junitPlatform
-  testImplementation group: 'org.junit.platform', name: 'junit-platform-commons', version: versions.junitPlatform
+  testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
+  testImplementation "org.junit.jupiter:junit-jupiter-params:${versions.junit}"
+  testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
+  testImplementation "org.junit.platform:junit-platform-engine:${versions.junitPlatform}"
+  testImplementation "org.junit.platform:junit-platform-commons:${versions.junitPlatform}"
 
-  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBoot
+  testImplementation "org.springframework.boot:spring-boot-starter-test:${versions.springBoot}"
 
-  testImplementation group: 'org.camunda.bpm.dmn', name: 'camunda-engine-dmn', version: versions.camunda
-  testImplementation group: 'org.camunda.bpm.assert', name: 'camunda-bpm-assert', version: '15.0.0'
-  testImplementation group: 'org.camunda.bpm', name: 'camunda-engine', version: versions.camunda
-  testImplementation group: 'org.camunda.bpm.extension', name: 'camunda-bpm-junit5', version: '1.1.0'
+  testImplementation "org.camunda.bpm.dmn:camunda-engine-dmn:${versions.camunda}"
+  testImplementation 'org.camunda.bpm.assert:camunda-bpm-assert:15.0.0'
+  testImplementation "org.camunda.bpm:camunda-engine:${versions.camunda}"
+  testImplementation 'org.camunda.bpm.extension:camunda-bpm-junit5:1.1.0'
 
-  testImplementation group: 'com.h2database', name: 'h2', version: '2.4.240'
-  integrationTestImplementation "org.junit.vintage:junit-vintage-engine:${versions.junit}"
-  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.10', classifier: 'all'
+  testImplementation 'com.h2database:h2:2.4.240'
+  testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
+  integrationTestImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath

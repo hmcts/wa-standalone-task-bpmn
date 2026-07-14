@@ -2,15 +2,17 @@ package uk.gov.hmcts.reform.wastandalonetaskbpmn;
 
 import org.camunda.bpm.engine.ManagementService;
 import org.camunda.bpm.engine.ProcessEngine;
+import org.camunda.bpm.engine.RepositoryService;
+import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.TaskService;
 import org.camunda.bpm.engine.impl.cfg.StandaloneInMemProcessEngineConfiguration;
 import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.task.Task;
-import org.camunda.bpm.engine.test.ProcessEngineRule;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Before;
-import org.junit.Rule;
+import org.camunda.bpm.extension.junit5.test.ProcessEngineExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.RegisterExtension;
 
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
@@ -30,25 +32,33 @@ public abstract class CamundaProcessEngineBaseUnitTest {
     private static final ProcessEngine INSTANCE = new StandaloneInMemProcessEngineConfiguration().buildProcessEngine();
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_TIME_FORMAT_PATTERN);
 
-    @Rule
-    public ProcessEngineRule processEngineRule = new ProcessEngineRule(INSTANCE);
+    @RegisterExtension
+    static ProcessEngineExtension processEngineExtension = ProcessEngineExtension.builder()
+        .useProcessEngine(INSTANCE)
+        .build();
 
+    public RuntimeService runtimeService;
+    public RepositoryService repositoryService;
     public ManagementService managementService;
+    public TaskService taskService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        managementService = processEngineRule.getManagementService();
+        runtimeService = INSTANCE.getRuntimeService();
+        repositoryService = INSTANCE.getRepositoryService();
+        managementService = INSTANCE.getManagementService();
+        taskService = INSTANCE.getTaskService();
     }
 
     public ProcessInstance startCreateTaskProcessWithBusinessKey(Map<String, Object> processVariables,
                                                                  String businessKey) {
-        return processEngineRule.getRuntimeService()
+        return runtimeService
             .startProcessInstanceByMessage("createTaskMessage", businessKey, processVariables);
     }
 
     public ProcessInstance startCreateTaskProcessWithBusinessKeyWithoutTenentId(Map<String, Object> processVariables,
                                                                  String businessKey) {
-        return processEngineRule.getRuntimeService().createMessageCorrelation("createTaskMessage")
+        return runtimeService.createMessageCorrelation("createTaskMessage")
             .processInstanceBusinessKey(businessKey)
             .setVariables(processVariables)
             .withoutTenantId()
@@ -116,7 +126,6 @@ public abstract class CamundaProcessEngineBaseUnitTest {
             .hasName("Provide respondent evidence")
             .isNotAssigned();
 
-        TaskService taskService = processEngineRule.getTaskService();
         Task task = taskService.createTaskQuery().processInstanceId(processInstance.getId()).singleResult();
 
         //Retrieve all tasks variables

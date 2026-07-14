@@ -4,9 +4,8 @@ import org.camunda.bpm.engine.runtime.JobQuery;
 import org.camunda.bpm.engine.runtime.ProcessInstance;
 import org.camunda.bpm.engine.test.Deployment;
 import org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests;
-import org.junit.Test;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.wastandalonetaskbpmn.CamundaProcessEngineBaseUnitTest;
 
 import java.time.ZonedDateTime;
@@ -20,20 +19,13 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 import static org.camunda.bpm.engine.test.assertions.bpmn.BpmnAwareTests.externalTask;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
+class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
 
     private ProcessInstance processInstance;
 
-    @AfterEach
-    public void tearDown() {
-
-        processEngineRule.getRuntimeService().correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
-        BpmnAwareTests.assertThat(processInstance).isEnded();
-    }
-
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_delay_until_and_wait_at_processStartTimer() {
+    void should_create_a_task_with_delay_until_and_wait_at_processStartTimer() {
 
         String delayUntilValue = now().plusSeconds(1).format(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT_PATTERN));
 
@@ -70,11 +62,14 @@ public class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
 
         managementService.executeJob(jobQuery.singleResult().getId());
 
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
+
     }
 
     @Test
     @Deployment(resources = {"wa-task-initiation-ia-asylum.bpmn"})
-    public void should_create_a_task_with_no_delay_until_and_wait_at_processStartTimer() {
+    void should_create_a_task_with_no_delay_until_and_wait_at_processStartTimer() {
 
         ZonedDateTime dueDate = now().plusDays(7);
 
@@ -108,6 +103,9 @@ public class CamundaDelayTaskTest extends CamundaProcessEngineBaseUnitTest {
         Assertions.assertEquals("2000-01-01T00:00:00", dateFormat.format(processDueDate));
 
         managementService.executeJob(jobQuery.singleResult().getId());
+
+        runtimeService.correlateMessage("cancelTasks", TEST_BUSINESS_KEY);
+        BpmnAwareTests.assertThat(processInstance).isEnded();
 
     }
 }
