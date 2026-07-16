@@ -246,7 +246,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-json:${versions.springBoot}"
   implementation 'com.google.guava:guava:33.6.0-jre'
 
-  implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.0'
+  implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.1'
 
   implementation "org.springdoc:springdoc-openapi-starter-webmvc-ui:${versions.springDoc}"
 
