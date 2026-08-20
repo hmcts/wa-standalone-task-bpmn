@@ -109,7 +109,7 @@ tasks.register('fortifyScan', JavaExec)  {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '13.9.0'
+  toolVersion = '13.11.0'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
