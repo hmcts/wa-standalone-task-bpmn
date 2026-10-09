@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +39,9 @@ class OpenAPIPublisherTest {
             .getResponse()
             .getContentAsByteArray();
 
-        try (OutputStream outputStream = Files.newOutputStream(Paths.get("/tmp/swagger-specs.json"))) {
+        Path tempDirectory = Paths.get(System.getProperty("java.io.tmpdir"));
+        Path swaggerSpecsPath = tempDirectory.resolve("swagger-specs.json"); // platform-agnostic path
+        try (OutputStream outputStream = Files.newOutputStream(swaggerSpecsPath)) {
             outputStream.write(specs);
         }
 
