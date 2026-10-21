@@ -181,7 +181,7 @@ dependencyManagement {
     dependency group: 'org.bouncycastle', name: 'bcpkix-jdk15on', version: '1.70'
 
     // CVE-2018-10237 - Unbounded memory allocation
-    dependencySet(group: 'com.google.guava', version: '33.6.0-jre') {
+    dependencySet(group: 'com.google.guava', version: '33.7.2-jre') {
       entry 'guava'
     }
 
@@ -244,7 +244,7 @@ dependencies {
   implementation "org.springframework.boot:spring-boot-starter-actuator:${versions.springBoot}"
   implementation "org.springframework.boot:spring-boot-starter-aop:${versions.springBoot}"
   implementation "org.springframework.boot:spring-boot-starter-json:${versions.springBoot}"
-  implementation 'com.google.guava:guava:33.6.0-jre'
+  implementation 'com.google.guava:guava:33.7.2-jre'
 
   implementation 'com.fasterxml.jackson.core:jackson-databind:2.22.4'
 
