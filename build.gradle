@@ -273,7 +273,7 @@ dependencies {
   testImplementation "org.camunda.bpm:camunda-engine:${versions.camunda}"
   testImplementation 'org.camunda.bpm.extension:camunda-bpm-junit5:1.1.0'
 
-  testImplementation 'com.h2database:h2:2.4.240'
+  testImplementation 'com.h2database:h2:2.5.252'
   testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
   integrationTestImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
 
